@@ -83,7 +83,9 @@ schema DB yang di buat :
 
 # for run unit testing
 
-- npm run test
+1. open terminal
+2. go to directry folder
+3. typing `npm run test` in terminal
 
 # parking Table
 
