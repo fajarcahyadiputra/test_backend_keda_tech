@@ -29,7 +29,7 @@ module.exports = async (req, res, next) => {
                     message: item.message.replace(/[^\w.,\s]/g, ''),
                     field: item.path[0]
                 }
-            }), 401));
+            }), 400));
         }
 
         let price_total, total_times;

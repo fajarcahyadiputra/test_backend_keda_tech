@@ -81,7 +81,11 @@ Base Route
 
 schema DB yang di buat : 
 
-### parking Table
+# for run unit testing
+
+- npm run test
+
+# parking Table
 
 | Field Name         | Type     | Key | Description                         |
 | ------------------ | -------- | :-: | ----------------------------------- |
