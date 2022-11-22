@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.13.1/b-2.3.3/b-html5-2.3.3/r-2.4.0/datatables.min.css" />
+    <title>Parking View</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4 class="mb-3">From Search</h4>
+                        <form action="" method="get">
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Date In</label>
+                                    <input value="<%=query.date_in ?? query.date_in %>" type="date" name="date_in"
+                                        class="form-control" placeholder="Date In" aria-label="Date In">
+                                </div>
+                                <div class="col">
+                                    <label for="">Date Out</label>
+                                    <input type="date" value="<%=query.date_out ?? query.date_out %>" name="date_out"
+                                        class="form-control" placeholder="Date Out" aria-label="Date Out">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Start Price</label>
+                                    <input value="<%=query.start_price ?? query.start_price %>" name="start_price"
+                                        type="number" class="form-control" placeholder="Start Price"
+                                        aria-label="Start Price">
+                                </div>
+                                <div class="col">
+                                    <label for="">End Price</label>
+                                    <input value="<%=query.end_price ?? query.end_price %>" name="end_price"
+                                        type="number" class="form-control" placeholder="End Price"
+                                        aria-label="End Price">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Vehicle Type</label>
+                                    <select name="vehicle_type" id="vehicle_type" class="form-control">
+                                        <option value="" disabled selected hidden>- Select Vechile Type -</option>
+                                        <option <%=query.vehicle_type ? query.vehicle_type=='car' ?"selected":"":"" %>
+                                            value="car">Car</option>
+                                        <option <%=query.vehicle_type ? query.vehicle_type=='motorcycle'
+                                            ?"selected":"":"" %> value="motorcycle">Motorcycle</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-success mt-2">Search</button>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="mb-3">From Input Parking</h4>
+                        <form onsubmit="return saveParking(event)" id="form-add-parking" method="get">
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Plat No</label>
+                                    <input required type="text" name="plat_no" class="form-control"
+                                        placeholder="Plat No" aria-label="Plat No">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Date In</label>
+                                    <input required type="datetime-local" name="date_in" class="form-control"
+                                        placeholder="Date In" aria-label="Date In">
+                                </div>
+                                <div class="col">
+                                    <label for="">Date Out</label>
+                                    <input required type="datetime-local" name="date_out" class="form-control"
+                                        placeholder="Date Out" aria-label="Date Out">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Vehicle Type</label>
+                                    <select required name="vehicle_type" id="vehicle_type" class="form-control">
+                                        <option value="" disabled selected hidden>- Select Vechile Type -</option>
+                                        <option value="car">Car</option>
+                                        <option value="motorcycle">Motorcycle</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-success mt-2">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="datatable" class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>No Plat</th>
+                            <th>Vehicle Type</th>
+                            <th>Date In</th>
+                            <th>Date Out</th>
+                            <th>Total Hours</th>
+                            <th>Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% parkings.map((data, index)=>{ %>
+                            <tr>
+                                <td>
+                                    <%= index + 1 %>
+                                </td>
+                                <td>
+                                    <%= data.plat_no %>
+                                </td>
+                                <td>
+                                    <%= data.vehicle_yype %>
+                                </td>
+                                <td>
+                                    <%= data.date_in %>
+                                </td>
+                                <td>
+                                    <%= data.date_out %>
+                                </td>
+                                <td>
+                                    <%= data.total_times %>
+                                </td>
+                                <td>
+                                    <%= data.total_price %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript"
+    src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.13.1/b-2.3.3/b-html5-2.3.3/r-2.4.0/datatables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $("#datatable").DataTable();
+    async function saveParking(e) {
+        e.preventDefault();
+        let dataBody = {};
+        for (var pair of new FormData(document.querySelector("#form-add-parking"))) {
+            dataBody[pair[0]] = pair[1];
+        }
+        try {
+            let { data } = await axios.post("/api/v1/parking", dataBody);
+            Swal.fire(
+                "Good Jobs!",
+                "Successfully",
+                "success"
+            ).then(() => {
+                location.reload();
+            })
+        } catch (error) {
+            Swal.fire(
+                "Opss!",
+                "Fail!",
+                "error"
+            ).then(() => {
+                location.reload();
+            })
+        }
+    }
+</script>
+
+</html>
