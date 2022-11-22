@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const {
-    createParking, getParking, getsParking, deleteParking
+    createParking
 } = require('../controllers/parking');
 // const authMidleware = require('../midleware/authMidleware');
 
